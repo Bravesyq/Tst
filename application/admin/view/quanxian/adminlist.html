@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>表格</title>
+    <link rel="stylesheet" href="__STATIC__/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/frame/static/css/style.css">
+    <link rel="icon" href="__STATIC__/frame/static/image/code.ico">
+    <script type="text/javascript" src="__STATIC__/frame/layui/layui.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/bs/css/bootstrap.min.css">
+</head>
+<body class="body">
+    <!-- 工具集 -->
+    <div class="my-btn-box">
+        <span class="fl">
+            <a href="{:url('admin/addadminuser')}" class="layui-btn btn-add layui-btn-normal" id="btn-add">添加用户</a>
+            <a href="javascript:;" class="layui-btn btn-add layui-btn-normal" id="btn-refresh" onclick="location.reload([true]);"><i class="layui-icon">&#x1002;</i></a>
+        </span>
+        <span class="fr">
+            <form>
+            <span class="layui-form-label">搜索：</span>
+            <div class="layui-input-inline">
+                <input type="text" name="name" autocomplete="off" placeholder="请输入搜索条件" class="layui-input">
+            </div>
+            <input type="submit" class="layui-btn mgl-20" name="" value="查询">
+            </form>
+        </span>
+    </div>
+
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>账号</th>
+                <th>密码</th>
+                <th>姓名</th>
+                <th>加入时间</th>
+                <th>编号</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+    </table>
+
+</body>
+</html>
+<script type="text/javascript" src="__STATIC__/frame/layui/layui.js"></script>
+<script type="text/javascript" src="__STATIC__/frame/static/js/vip_comm.js"></script>
+<script type="text/javascript">
+    //ajax改变状态
+    function statu(obj,id,statu){
+        if(statu==2){
+            //禁用状态
+            $.post("{:url('admin/adminstatu')}",{id:id,statu:'1'},function(data){
+                if(data==1){
+                    $(obj).html('正常');
+                    $(obj).addClass('layui-btn-warm').removeClass('layui-btn-normal');
+                    $(obj).attr('onclick','statu(this,'+id+',1)');
+                }
+            });
+        }else{
+            //正常状态
+            $.post("{:url('admin/adminstatu')}",{id:id,statu:'2'},function(data){
+                if(data==1){
+                    $(obj).html('禁用');
+                    $(obj).addClass('layui-btn-normal').removeClass('layui-btn-warm');
+                    $(obj).attr('onclick','statu(this,'+id+',2)');
+                }
+            });
+        }
+    }
+    // 用户的删除
+    function del(obj, id) {
+        // 发送ajax请求
+        $.post("{:url('admin/admindel')}", {
+            id: id
+        }, function(data) {
+            // 判断删除成功和失败
+            if(data == 1) {
+                // 移除数据
+                $(obj).parent().parent().remove();
+            } else {
+                alert('删除失败');
+            }
+        });
+    }
+</script>

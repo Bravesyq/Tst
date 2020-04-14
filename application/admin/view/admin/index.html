@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="renderer" content="webkit">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>表格</title>
+
+    <link rel="stylesheet" href="__STATIC__/frame/layui/css/layui.css">
+
+    <link rel="stylesheet" href="__STATIC__/frame/static/css/style.css">
+
+    <link rel="icon" href="__STATIC__/frame/static/image/code.ico">
+
+    <script type="text/javascript" src="__STATIC__/frame/layui/layui.js"></script>
+
+    <script type="text/javascript" src="__STATIC__/js/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="__STATIC__/bs/css/bootstrap.min.css">
+    <script type="text/javascript" src="__STATIC__/bs/js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="body">
+
+    <!-- 工具集 -->
+
+    <div class="my-btn-box">
+
+        <span class="fl">
+
+            <a href="{:url('admin/addadminuser')}" class="layui-btn btn-add layui-btn-normal" id="btn-add">添加用户</a>
+
+            <a href="javascript:;" class="layui-btn btn-add layui-btn-normal" id="btn-refresh" onclick="location.reload([true]);"><i class="layui-icon">&#x1002;</i></a>
+
+           
+
+        </span>
+
+        <span class="fr">
+
+            <form>
+
+            <span class="layui-form-label">搜索：</span>
+
+            <div class="layui-input-inline">
+
+                <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input">
+
+            </div>
+
+            <input type="submit" class="layui-btn mgl-20" name="" value="查询">
+
+            </form>
+
+        </span>
+
+    </div>
+    <style type="text/css">
+        #table th{
+            /*border: 1px solid black;*/
+        }
+        #table td{
+            /*border: 1px solid grey;*/
+        }
+    </style>
+
+
+    <table class="layui-table" id="table">
+
+        <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>账号</th>
+
+            <th>密码</th>
+
+            <th>姓名</th>
+
+            <th>加入时间</th>
+
+            <th>部门</th>
+
+            <th>老师ID</th>
+
+            <th>权限</th>
+
+            <th>加入时间</th>
+
+            <th>状态</th>
+
+            <th>操作</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+            {volist name="data" id="value"}
+
+                <tr>
+
+                    <td>{$value.id}</td>
+
+                    <td>{$value.user}</td>
+
+                    <td>{$value.pass}</td>
+
+                    <td>{$value.nickname}</td>
+
+                    <td>{$value.iphone}</td>
+
+                    <td>{$value.bumen_name}</td>
+
+                    <td>{$value.teac_id}</td>
+
+                    <td>
+
+                      
+                        {if condition="$value.rou_id eq '10'"}
+                            职员
+                        {elseif condition="$value.rou_id eq '11'"}
+                            主管  
+                        {elseif condition="$value.rou_id eq '12'"}
+                            发货
+                        {elseif condition="$value.rou_id eq '13'"}
+                            BOSS
+                        {else/}联系17865151770{/if}
+
+
+                    </td>
+
+                    <td>{$value.addtime|date="Y-m-d H:i:s",###}</td>
+
+                    <td>
+
+                        {if condition="$value.statu eq '1'"}
+
+                            <button class="layui-btn layui-btn-mini layui-btn-warm" onclick="statu(this,{$value.id},{$value.statu})">正常</button>
+
+                        {else /}
+
+                            <button class="layui-btn layui-btn-mini layui-btn-normal" onclick="statu(this,{$value.id},{$value.statu})">禁用</button>
+
+                        {/if}
+
+                    </td>
+
+
+                    <td>
+		              <span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edit" onclick="edit(this,{$value.id})"></span>
+		            </td>
+
+                </tr>
+
+            {/volist}
+
+        </tbody>
+
+
+
+    </table>
+
+    {$data->render()}
+
+    <!-- 老师修改模态框 -->
+
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+        <div class="modal-dialog" role="document">
+
+            <div class="modal-content"  style="width: 700px; margin:0 auto;">
+
+                <div class="modal-header">
+
+                    <button type="button" id="refresh" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                    <h4 class="modal-title" id="myModalLabel">用户信息修改</h4>
+
+                </div>
+
+                <div class="modal-body" id="teacindex_edit">
+
+
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+<script type="text/javascript" src="__STATIC__/frame/layui/layui.js"></script>
+
+<script type="text/javascript" src="__STATIC__/frame/static/js/vip_comm.js"></script>
+
+<script type="text/javascript">
+
+    //ajax改变状态
+
+    function statu(obj,id,statu){
+
+        if(statu==2){
+
+            //禁用状态
+
+            $.post("{:url('admin/adminstatu')}",{id:id,statu:'1'},function(data){
+
+                if(data==1){
+
+                    $(obj).html('正常');
+
+                    $(obj).addClass('layui-btn-warm').removeClass('layui-btn-normal');
+
+                    $(obj).attr('onclick','statu(this,'+id+',1)');
+
+                }
+
+            });
+
+        }else{
+
+            //正常状态
+
+            $.post("{:url('admin/adminstatu')}",{id:id,statu:'2'},function(data){
+
+                if(data==1){
+
+                    $(obj).html('禁用');
+
+                    $(obj).addClass('layui-btn-normal').removeClass('layui-btn-warm');
+
+                    $(obj).attr('onclick','statu(this,'+id+',2)');
+
+                }
+
+            });
+
+        }
+
+    }
+
+
+    // 管理员的修改
+    function edit(obj,id){
+        $.post("{:url('admin/admin_infoedit')}",{id: id},function(data) {
+
+            $('#teacindex_edit').html(data);
+
+        });
+    }
+
+    // 管理员修改的保存
+    function adminusersave(){
+        var list = $("#savedata").serializeArray();
+
+        var obj = {};
+        $.each(list,function(){
+            obj[this.name] = this.value||'';
+        });
+        
+        $.post("{:url('admin/adminusersave')}",{obj:obj},function(res){
+            if (res.code == 1 ) {
+
+                $('#charge').modal('hide');
+                window.location.reload();
+
+            }else if (res.code === 2 ){
+
+                alert("修改失败");
+
+            }
+        });
+    }
+
+
+     //友链排序
+    function sorts(obj,id){
+        alert(id);
+
+        val=$(obj).val();
+        alert(val);
+        exit;
+        $.post('/st8866hk.php/book/ajax_book_sorts.html',{id:id,sort:val},function(data){
+            if (data==1) {
+                $("#refresh").click();
+            }else{
+                alert('排序失败');
+            }
+        });
+    }
+</script>

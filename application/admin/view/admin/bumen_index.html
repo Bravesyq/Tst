@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="renderer" content="webkit">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>表格</title>
+
+    <link rel="stylesheet" href="__STATIC__/frame/layui/css/layui.css">
+
+    <link rel="stylesheet" href="__STATIC__/frame/static/css/style.css">
+
+    <link rel="icon" href="__STATIC__/frame/static/image/code.ico">
+
+    <script type="text/javascript" src="__STATIC__/frame/layui/layui.js"></script>
+
+    <script type="text/javascript" src="__STATIC__/js/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="__STATIC__/bs/css/bootstrap.min.css">
+    <script type="text/javascript" src="__STATIC__/bs/js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="body">
+
+    <!-- 工具集 -->
+
+    <div class="my-btn-box">
+
+        <span class="fl">
+
+            <a href="javascript:;" class="layui-btn btn-add layui-btn-normal" data-toggle="modal" data-target="#bumen_add" id="btn-add">添加部门</a>
+
+            <a href="javascript:;" class="layui-btn btn-add layui-btn-normal" id="btn-refresh" onclick="location.reload([true]);"><i class="layui-icon">&#x1002;</i></a>
+
+           
+
+        </span>
+    </div>
+    <style type="text/css">
+        #table th{
+            /*border: 1px solid black;*/
+        }
+        #table td{
+            /*border: 1px solid grey;*/
+        }
+    </style>
+
+
+    <table class="layui-table" id="table">
+
+        <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>部门名称</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+            {volist name="data" id="value"}
+
+                <tr>
+
+                    <td>{$value.id}</td>
+
+                    <td><input type="text" name="" id="{$value.id}" class="bumen_name_c" value="{$value.bumen_name}" style="border: 0px;"> </td>
+
+                </tr>
+
+            {/volist}
+
+        </tbody>
+
+
+
+    </table>
+
+    {$data->render()}
+
+    <!-- 老师修改模态框 -->
+
+    <div class="modal fade" id="bumen_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+        <div class="modal-dialog" role="document">
+
+            <div class="modal-content" style="height: 200px;">
+
+                <div class="modal-header">
+
+                    <button type="button" id="refresh" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                    <h4 class="modal-title" id="myModalLabel">部门添加</h4>
+
+                </div>
+
+                <div class="modal-body" id="teacindex_edit">
+
+                    <form action="return false" id="studentinfo" >
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">部&nbsp;门：</label>
+                                <input type="text" class="form-control" id="bumen_val" placeholder="请输入添加的部门">
+                            </div>
+                            <div class="form-group">
+                                <input type="button" value="提交" onclick="add_bumen_btn()" class="btn btn-success">
+                                
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+<script type="text/javascript" src="__STATIC__/frame/layui/layui.js"></script>
+
+<script type="text/javascript" src="__STATIC__/frame/static/js/vip_comm.js"></script>
+
+<script type="text/javascript">
+
+
+    // 管理员的修改
+    function edit(obj,id){
+        $.post("{:url('admin/admin_infoedit')}",{id: id},function(data) {
+
+            $('#teacindex_edit').html(data);
+
+        });
+    }
+
+    // 部门添加的保存
+    function add_bumen_btn(){
+        var bumen_val = $('#bumen_val').val();
+
+        $.post("{:url('admin/ajax_bumen_add')}",{bumen_name:bumen_val},function(res){
+            if(res.code=='200'){
+                $('#btn-refresh').click();
+            }else if(res.code=='400'){
+                alert('添加失败');
+            }
+        },'json');
+    }
+
+        $(".bumen_name_c").blur(function(){
+            var id = $(this).attr('id');
+            var bumen_name = $(this).val();
+             $.ajax({
+                url:"{:url('ajax_bumen_edit')}",
+                type:'post',
+                data:{
+                    id:id,
+                    bumen_name:bumen_name,
+                },
+                dataType:'json',
+
+                success:function(data)
+                {
+                  if (data.code == '200') {
+                    alert('修改成功');
+                  } else if (data.code == '400') {
+                    alert('修改失败');
+                  }
+                }
+
+
+            });
+        });
+
+
+</script>

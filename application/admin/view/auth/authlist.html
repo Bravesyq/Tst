@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>表格</title>
+    <link rel="stylesheet" href="__STATIC__/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/frame/static/css/style.css">
+    <link rel="icon" href="__STATIC__/frame/static/image/code.ico">
+    <script type="text/javascript" src="__STATIC__/frame/layui/layui.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/bs/css/bootstrap.min.css">
+    <script type="text/javascript" src="__STATIC__/bs/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        font{
+            display: none;
+        }
+    </style>
+</head>
+<body class="body">
+
+    <!-- 工具集 -->
+    <div class="my-btn-box">
+        <span class="fl">
+            <a href="{:url('tianjia')}" class="layui-btn layui-btn-normal radius btn-delect" id="btn-delete-all">添加权限功能</a>
+            <a href="javascript:;" class="layui-btn btn-add layui-btn-normal" id="btn-refresh" onclick="location.reload([true]);"><i class="layui-icon">&#x1002;</i></a>
+        </span>
+    </div>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>权限名称</th>
+            <th>父ID</th>
+            <th>控制器</th>
+            <th>操作方法</th>
+            <th>全路径</th>
+
+      
+        </tr>
+        </thead>
+        <tbody>
+            {volist name="info" id="v"}
+            <tr>
+                <td>{$v.auth_id}</td>
+                <td>{$v.auth_level|str_repeat='&emsp;',###*2}{$v.auth_name}</td>
+                <td>{$v.auth_pid}</td>
+                <td>{$v.auth_c}</td>
+                <td>{$v.auth_a}</td>
+                <td>{$v.auth_path}</td>
+                <!-- <td>{$v.auth_level}</td> -->
+            </tr>
+            {/volist}
+        </tbody>
+
+    </table>
+    {$info->render()}
+
+</body>
+</html>

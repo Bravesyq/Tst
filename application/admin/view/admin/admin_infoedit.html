@@ -1,0 +1,57 @@
+<form onsubmit="return false"  id="savedata">
+    <table>
+        <tr>
+            <input type="hidden" name="id" value="{$list.id}">
+
+
+            <th>账号</th>
+            <th><input type="text" name="user" value="{$list.user}"></th>
+        </tr>
+        <tr>
+            <th>密码</th>
+            <th><input type="text" name="pass" value="{$list.pass}" ></th>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <th><input type="text" name="nickname" value="{$list.nickname}"></th>
+        </tr>
+        <tr>
+            <th>手机号</th>
+            <th><input type="text" name="iphone" value="{$list.iphone}"></th>
+        </tr>
+        <tr>
+            <th>部门</th>
+            <th>
+                <select name="bumen" style="width: 193px;">
+                    {volist name="bumen" id="bumens"}
+                        <option value="{$bumens.id}" {if condition="$list.bumen eq $bumens.id"}selected="selected"{/if}>{$bumens.bumen_name}</option>
+                    {/volist}
+                </select>
+            </th>
+        </tr>
+        <tr>
+            <th>老师ID</th>
+            <th><input type="text" name="teac_id" value="{$list.teac_id}"></th>
+        </tr>
+        <tr>
+            <th>权限</th>
+            <th>
+                <select name="rou_id" style="width: 193px;">
+                    <option value="10" {if condition="$list.rou_id eq '10'"}selected="selected"{/if}>职员</option>
+                    <option value="11" {if condition="$list.rou_id eq '11'"}selected="selected"{/if}>主管</option>
+                    <option value="12" {if condition="$list.rou_id eq '12'"}selected="selected"{/if}>发货</option>
+                    <option value="13" {if condition="$list.rou_id eq '13'"}selected="selected"{/if}>财务</option>
+
+                </select>
+            </th>
+        </tr>
+    </table>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="buttonclose" data-dismiss="modal">
+            关闭
+        </button>
+        <button type="button" class="btn btn-primary" id="Download_button" onclick="adminusersave()">
+            提交更改
+        </button>
+    </div>
+</form>
