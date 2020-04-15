@@ -64,5 +64,58 @@ class Staff extends Common{
         return view();
       }
    	}
-
+    // 员工修改姓名
+    public function ajax_edit_name(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('name'=>input('post.name')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+    // 员工修改手机号
+    public function ajax_edit_lxfs(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('lxfs'=>input('post.lxfs')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+    // 员工修改地址
+    public function ajax_edit_address(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('address'=>input('post.address')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+    // 员工ajax修改产品
+    public function ajax_edit_product(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('product'=>input('post.product')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+    // 员工ajax修改产品数量
+    public function ajax_edit_number(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('number'=>input('post.number')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+    // 员工ajax修改押金
+    public function ajax_edit_earnest_money(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('earnest_money'=>input('post.earnest_money')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
 }
