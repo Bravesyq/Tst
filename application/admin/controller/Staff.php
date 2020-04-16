@@ -52,6 +52,7 @@ class Staff extends Common{
         $post['add_luru_time'] = time();
         $post['user_id'] = $teac_id;
         $post['is_del'] = '1';
+        $post['verification_dsk'] = '待审核';
 
         $data = Db::table('st_information') -> insert($post);
       }else{
@@ -118,4 +119,63 @@ class Staff extends Common{
           echo json_encode(array('code'=>400,'msg'=>'修改失败'));
       }
     }
+    // 员工ajax修改支付方式
+    public function ajax_edit_pay_type(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('pay_type'=>input('post.pay_type')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+
+    // 员工ajax修改代收款
+    public function ajax_edit_ds_money(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('ds_money'=>input('post.ds_money')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+
+    // 员工ajax修改快递状态
+    public function ajax_edit_express_stat(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('express_stat'=>input('post.express_stat')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+
+    // 员工ajax修改是否复购
+    public function ajax_edit_is_purchase(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('is_purchase'=>input('post.is_purchase')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+    // 员工ajax修改进线日期
+    public function ajax_edit_line_time(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('line_time'=>input('post.line_time')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+
+    // 员工 ajax修改成交日期
+    public function ajax_edit_deal_time(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('deal_time'=>input('post.deal_time')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+    
 }

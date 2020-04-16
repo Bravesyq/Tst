@@ -53,6 +53,17 @@
                 <div class="layui-input-inline">
                     <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input">
                 </div>
+                <div class="layui-input-inline">
+                    <select name="verification_dsk" class="layui-input">
+                        <option value="待审核">审核</option>
+                        <option value="待审核">待审核</option>
+                        <option value="已拒绝">已拒绝</option>
+                        <option value="已通过">已通过</option>
+           
+                    </select>
+
+                </div>
+
 
                 <div class="layui-input-inline">
                     <select name="teac_id" class="layui-input">
@@ -101,7 +112,6 @@
             <th>录入日期</th>
             <th>职员</th>
             <th>操作</th>
-
         </tr>
 
         </thead>
@@ -113,12 +123,9 @@
                 border: 0;
                 /*background: none;*/
             }
-        
             tbody select:focus {
                 border-color: white;
             }
-
-       
         </style>
         <tbody>
 
@@ -126,11 +133,11 @@
 
                 <tr>
                     <td>{$value.id}</td>
-                    <td><input type="text" value="{$value.name}" style="width:100px;"></td>
-                    <td><input type="text" value="{$value.lxfs}" style="width:100px;"></td>
-                    <td><input type="text" value="{$value.address}" style="width:230px;"></td>
+                    <td><input type="text" value="{$value.name}" style="width:100px;" onblur="t_ajax_name(this,{$value.id})"></td>
+                    <td><input type="text" value="{$value.lxfs}" style="width:100px;" onblur="t_ajax_lxfs(this,{$value.id})"></td>
+                    <td><input type="text" value="{$value.address}" style="width:230px;" onblur="t_ajax_address(this,{$value.id})"></td>
                     <td>
-                        <select onblur="sorts(this,{$value.id})">
+                        <select onblur="t_ajax_product(this,{$value.id})">
                             <option value="">空</option>
                             {volist name="chanpinarr" id="chanpinarrs"}
                             <option value="{$chanpinarrs.product_name}" {if condition="$value.product eq $chanpinarrs.product_name"}selected="selected"{/if}>{$chanpinarrs.product_name}</option>
@@ -139,15 +146,15 @@
 
                     </td>
                     <td>
-                        <select onblur="sorts(this,{$value.id})">
+                        <select onblur="t_ajax_number(this,{$value.id})">
                             {volist name="liang" id="liangs"}
                                 <option value="{$liangs.s_number}" {if condition="$value.number eq $liangs.s_number"}selected="selected"{/if}>{$liangs.s_number}</option>
                             {/volist}
                         </select>
                     </td>
-                    <td><input type="text" value="{$value.earnest_money}" style="width:40px;"></td>
+                    <td><input type="text" value="{$value.earnest_money}" style="width:40px;" onblur="t_ajax_earnest_money(this,{$value.id})"></td>
                     <td>
-                        <select onblur="sorts(this,{$value.id})">
+                        <select onblur="t_ajax_pay_type(this,{$value.id})">
                             <option value="" {if condition="$value.pay_type eq ' '"}selected="selected"{/if}>支付方式</option>
                             <option value="微信支付" {if condition="$value.pay_type eq '微信支付'"}selected="selected"{/if}>微信支付</option>
                             <option value="支付宝" {if condition="$value.pay_type eq '支付宝'"}selected="selected"{/if}>支付宝</option>
@@ -155,11 +162,11 @@
                             <option value="门诊用户" {if condition="$value.pay_type eq '门诊用户'"}selected="selected"{/if}>门诊用户</option>
                         </select>
                     </td>
-                    <td><input type="text" value="{$value.ds_money}" style="width:40px;"></td>
+                    <td><input type="text" value="{$value.ds_money}" style="width:40px;" onblur="t_ajax_ds_money(this,{$value.id})"></td>
                     <td>
                         
 
-                        <select onblur="sorts(this,{$value.id})" 
+                        <select onblur="t_ajax_verification_dsk(this,{$value.id})" 
                             {if condition="$value.verification_dsk eq ' '"} 
                                 style="background-color:yellow;"
                             {elseif condition="$value.verification_dsk eq '已拒绝'"/}
@@ -176,7 +183,7 @@
                         </select>
                     </td>
                     <td>
-                        <select onblur="sorts(this,{$value.id})">
+                        <select onblur="t_ajax_express(this,{$value.id})">
                             <option value="顺丰" {if condition="$value.express eq ' '"}selected="selected"{/if}> </option>
                             <option value="顺丰" {if condition="$value.express eq '顺丰'"}selected="selected"{/if}>顺丰</option>
                             <option value="圆通" {if condition="$value.express eq '圆通'"}selected="selected"{/if}>圆通</option>
@@ -185,9 +192,9 @@
                             <option value="韵达" {if condition="$value.express eq '韵达'"}selected="selected"{/if}>韵达</option>
                         </select>
                     </td>
-                    <td><input type="text" value="{$value.express_number}" style="width:130px;"></td>
+                    <td><input type="text" value="{$value.express_number}" style="width:130px;" onblur="t_ajax_express_number(this,{$value.id})"></td>
                     <td>
-                        <select onblur="sorts(this,{$value.id})">
+                        <select onblur="t_ajax_express_stat(this,{$value.id})">
                             <option value=" " {if condition="$value.express_stat eq ' '"}selected="selected"{/if}>空</option>
                             <option value="已发货" {if condition="$value.express_stat eq '已发货'"}selected="selected"{/if}>已发货</option>
                             <option value="已签收" {if condition="$value.express_stat eq '已签收'"}selected="selected"{/if}>已签收</option>
@@ -197,14 +204,22 @@
                         </select>
                     </td>
                     <td>
-                        <select onblur="sorts(this,{$value.id})">
+                        <select onblur="t_ajax_is_purchase(this,{$value.id})">
                          
                             <option value="是" {if condition="$value.is_purchase eq '是'"}selected="selected"{/if}>是</option>
                             <option value="否" {if condition="$value.is_purchase eq '否'"}selected="selected"{/if}>否</option>
                         </select>
                     </td>
-                    <td><input type="text" value="{$value.line_time}" style="width:80px;"></td>
-                    <td><input type="text" value="{$value.deal_time}" style="width:80px;"></td>
+                    <td>
+                        <input type="text" value="{$value.line_time}" style="width:80px;" id="j_x_riqi">
+                        <span class="glyphicon glyphicon-ok" onclick="t_ajax_line_time({$value.id})"></span>
+                    </td>
+                    <td>
+                        <input type="text" value="{$value.deal_time}" style="width:80px;" id="c_j_riqi">
+                        <span class="glyphicon glyphicon-ok" onclick="t_ajax_deal_time({$value.id})"></span>
+                    </td>
+
+
                     <td>{$value.add_luru_time|date="Y-m-d H:i:s",###}</td>
                     <td>{$value.nickname}</td>
 
@@ -240,98 +255,217 @@
 <script type="text/javascript" src="__STATIC__/frame/static/js/vip_comm.js"></script>
 
 <script type="text/javascript">
-
-    //ajax改变状态
-
-    function statu(obj,id,statu){
-
-        if(statu==2){
-
-            //禁用状态
-
-            $.post("{:url('admin/adminstatu')}",{id:id,statu:'1'},function(data){
-
-                if(data==1){
-
-                    $(obj).html('正常');
-
-                    $(obj).addClass('layui-btn-warm').removeClass('layui-btn-normal');
-
-                    $(obj).attr('onclick','statu(this,'+id+',1)');
-
-                }
-
-            });
-
-        }else{
-
-            //正常状态
-
-            $.post("{:url('admin/adminstatu')}",{id:id,statu:'2'},function(data){
-
-                if(data==1){
-
-                    $(obj).html('禁用');
-
-                    $(obj).addClass('layui-btn-normal').removeClass('layui-btn-warm');
-
-                    $(obj).attr('onclick','statu(this,'+id+',2)');
-
-                }
-
-            });
-
-        }
-
-    }
-
-
-    // 管理员的修改
-    function edit(obj,id){
-        $.post("{:url('admin/admin_infoedit')}",{id: id},function(data) {
-
-            $('#teacindex_edit').html(data);
-
-        });
-    }
-
-    // 管理员修改的保存
-    function adminusersave(){
-        var list = $("#savedata").serializeArray();
-
-        var obj = {};
-        $.each(list,function(){
-            obj[this.name] = this.value||'';
-        });
-        
-        $.post("{:url('admin/adminusersave')}",{obj:obj},function(res){
-            if (res.code == 1 ) {
-
-                $('#charge').modal('hide');
-                window.location.reload();
-
-            }else if (res.code === 2 ){
-
-                alert("修改失败");
-
-            }
-        });
-    }
-
-
-     //友链排序
-    function sorts(obj,id){
-        alert(id);
-
-        val=$(obj).val();
-        alert(val);
-        exit;
-        $.post('/st8866hk.php/book/ajax_book_sorts.html',{id:id,sort:val},function(data){
-            if (data==1) {
+    // ajax 修改姓名
+    function t_ajax_name(obj,id){
+        var name = $(obj).val();
+        $.post("{:url('boss/ajax_edit_name')}",{id:id,name:name},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
                 $("#refresh").click();
-            }else{
-                alert('排序失败');
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
             }
-        });
+        },'json');
     }
+    // ajax 修改联系方式
+    function t_ajax_lxfs(obj,id){
+        var lxfs = $(obj).val();
+        $.post("{:url('boss/ajax_edit_lxfs')}",{id:id,lxfs:lxfs},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改地址
+    function t_ajax_address(obj,id){
+        var address = $(obj).val();
+        $.post("{:url('boss/ajax_edit_address')}",{id:id,address:address},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改产品
+    function t_ajax_product(obj,id){
+
+        var product=$(obj).val();
+       
+        $.post("{:url('boss/ajax_edit_product')}",{id:id,product:product},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 产品数量
+    function t_ajax_number(obj,id){
+        var number=$(obj).val();
+       
+        $.post("{:url('boss/ajax_edit_number')}",{id:id,number:number},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改押金
+    function t_ajax_earnest_money(obj,id){
+        var earnest_money=$(obj).val();
+
+        $.post("{:url('boss/ajax_edit_earnest_money')}",{id:id,earnest_money:earnest_money},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改支付方式
+    function t_ajax_pay_type(obj,id){
+        var pay_type=$(obj).val();
+
+        $.post("{:url('boss/ajax_edit_pay_type')}",{id:id,pay_type:pay_type},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改代收款
+    function t_ajax_ds_money(obj,id){
+        var ds_money=$(obj).val();
+
+        $.post("{:url('boss/ajax_edit_ds_money')}",{id:id,ds_money:ds_money},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改状态
+    function t_ajax_verification_dsk(obj,id){
+        var verification_dsk=$(obj).val();
+      
+        $.post("{:url('boss/ajax_edit_verification_dsk')}",{id:id,verification_dsk:verification_dsk},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改快递
+    function t_ajax_express(obj,id){
+        var express=$(obj).val();
+      
+        $.post("{:url('boss/ajax_edit_express')}",{id:id,express:express},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改单号
+    function t_ajax_express_number(obj,id) {
+        var express_number=$(obj).val();
+      
+        $.post("{:url('boss/ajax_edit_express_number')}",{id:id,express_number:express_number},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+    // ajax 修改快递状态
+    function t_ajax_express_stat(obj,id){
+        var express_stat=$(obj).val();
+
+        $.post("{:url('boss/ajax_edit_express_stat')}",{id:id,express_stat:express_stat},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+
+    // ajax 修改是否复购
+    function t_ajax_is_purchase(obj,id){
+        var is_purchase=$(obj).val();
+
+        $.post("{:url('boss/ajax_edit_is_purchase')}",{id:id,is_purchase:is_purchase},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+
+    // ajax 修改进线日期
+    function t_ajax_line_time(id){
+        var line_time = $('#j_x_riqi').val();
+
+        $.post("{:url('boss/ajax_edit_line_time')}",{id:id,line_time:line_time},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+
+    // ajax 修改成交日期
+    function t_ajax_deal_time(id){
+        var deal_time = $('#c_j_riqi').val();
+
+        $.post("{:url('boss/ajax_edit_deal_time')}",{id:id,deal_time:deal_time},function(data){
+            if(data.code == '200'){
+                layer.msg(data.msg); 
+                $("#refresh").click();
+            }else if(data.code == '400'){
+                layer.msg(data.msg); 
+            }
+        },'json');
+    }
+</script>
+<script type="text/javascript">
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+      laydate.render({
+        elem: '#j_x_riqi' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+
+      laydate.render({
+        elem: '#c_j_riqi' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+
+    });
 </script>

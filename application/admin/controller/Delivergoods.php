@@ -50,4 +50,24 @@ class Delivergoods extends Common{
       return view();
     }
 
+    // 发货 ajax修改快递
+    public function ajax_edit_express(){
+      $data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('express'=>input('post.express')));
+      if( $data !== false){
+          echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+      }else {
+          echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+      }
+    }
+
+    // 发货 ajax修改单号
+    public function ajax_edit_express_number(){
+    	$data = Db::table('st_information')->where(array('id'=>input('post.id')))->update(array('express_number'=>input('post.express_number')));
+	    if( $data !== false){
+	        echo json_encode(array('code'=>200,'msg'=>'修改成功'));
+	    }else {
+	        echo json_encode(array('code'=>400,'msg'=>'修改失败'));
+	    }
+    }
+
 }
