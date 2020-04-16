@@ -108,11 +108,11 @@
                 <tr>
 
                     <td>{$value.id}</td>
-                    <td> <input type="text" value="{$value.name}" style="width:60px;" onblur="t_ajax_name(this,{$value.id})"> </td>
-                    <td> <input type="text" value="{$value.lxfs}" style="width:100px;" onblur="t_ajax_lxfs(this,{$value.id})"></td>
-                    <td> <input type="text" value="{$value.address}" style="width:180px;" onblur="t_ajax_address(this,{$value.id})"></td>
+                    <td> <input type="text" value="{$value.name}" style="width:60px;" onblur="t_ajax_name(this,{$value.id},'{$value.verification_dsk}')"> </td>
+                    <td> <input type="text" value="{$value.lxfs}" style="width:100px;" onblur="t_ajax_lxfs(this,{$value.id},'{$value.verification_dsk}')"></td>
+                    <td> <input type="text" value="{$value.address}" style="width:180px;" onblur="t_ajax_address(this,{$value.id},'{$value.verification_dsk}')"></td>
                     <td>
-                        <select onblur="t_ajax_product(this,{$value.id})">
+                        <select onblur="t_ajax_product(this,{$value.id},'{$value.verification_dsk}')">
                             <option value="">空</option>
                             {volist name="chanpinarr" id="chanpinarrs"}
                             <option value="{$chanpinarrs.product_name}" {if condition="$value.product eq $chanpinarrs.product_name"}selected="selected"{/if}>{$chanpinarrs.product_name}</option>
@@ -120,15 +120,15 @@
                         </select>
                     </td>
                     <td>
-                        <select onblur="t_ajax_number(this,{$value.id})">
+                        <select onblur="t_ajax_number(this,{$value.id},'{$value.verification_dsk}')">
                             {volist name="liang" id="liangs"}
                                 <option value="{$liangs.s_number}" {if condition="$value.number eq $liangs.s_number"}selected="selected"{/if}>{$liangs.s_number}</option>
                             {/volist}
                         </select>
                     </td>
-                    <td><input type="text" value="{$value.earnest_money}" style="width:40px;" onblur="t_ajax_earnest_money(this,{$value.id})"></td>
+                    <td><input type="text" value="{$value.earnest_money}" style="width:40px;" onblur="t_ajax_earnest_money(this,{$value.id},'{$value.verification_dsk}')"></td>
                     <td>
-                        <select onblur="t_ajax_pay_type(this,{$value.id})">
+                        <select onblur="t_ajax_pay_type(this,{$value.id},'{$value.verification_dsk}')">
                             <option value="" {if condition="$value.pay_type eq ' '"}selected="selected"{/if}>支付方式</option>
                             <option value="微信支付" {if condition="$value.pay_type eq '微信支付'"}selected="selected"{/if}>微信支付</option>
                             <option value="支付宝" {if condition="$value.pay_type eq '支付宝'"}selected="selected"{/if}>支付宝</option>
@@ -136,7 +136,7 @@
                             <option value="门诊用户" {if condition="$value.pay_type eq '门诊用户'"}selected="selected"{/if}>门诊用户</option>
                         </select>
                     </td>
-                    <td><input type="text" value="{$value.ds_money}" style="width:40px;" onblur="t_ajax_ds_money(this,{$value.id})"></td>
+                    <td><input type="text" value="{$value.ds_money}" style="width:40px;" onblur="t_ajax_ds_money(this,{$value.id},'{$value.verification_dsk}')"></td>
                     <td>{$value.verification_dsk}</td>
                     <td>{$value.express}</td>
                     <td>{$value.express_number}</td>
@@ -151,7 +151,7 @@
                         </select>
                     </td>
                     <td>
-                        <select onblur="t_ajax_is_purchase(this,{$value.id})">
+                        <select onblur="t_ajax_is_purchase(this,{$value.id},'{$value.verification_dsk}')">
                          
                             <option value="是" {if condition="$value.is_purchase eq '是'"}selected="selected"{/if}>是</option>
                             <option value="否" {if condition="$value.is_purchase eq '否'"}selected="selected"{/if}>否</option>
@@ -159,11 +159,11 @@
                     </td>
                     <td>
                         <input type="text" value="{$value.line_time}" style="width:80px;" id="j_x_riqi">
-                        <span class="glyphicon glyphicon-ok" onclick="t_ajax_line_time({$value.id})"></span>
+                        <span class="glyphicon glyphicon-ok" onclick="t_ajax_line_time({$value.id},'{$value.verification_dsk}')"></span>
                     </td>
                     <td>
                         <input type="text" value="{$value.deal_time}" style="width:80px;" id="c_j_riqi">
-                        <span class="glyphicon glyphicon-ok" onclick="t_ajax_deal_time({$value.id})"></span>
+                        <span class="glyphicon glyphicon-ok" onclick="t_ajax_deal_time({$value.id},'{$value.verification_dsk}')"></span>
                     </td>
                     <td>{$value.add_luru_time|date="Y-m-d H:i:s",###}</td>
                     <td>
@@ -195,7 +195,11 @@
 
 <script type="text/javascript">
     // ajax 修改姓名
-    function t_ajax_name(obj,id){
+    function t_ajax_name(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var name = $(obj).val();
         $.post("{:url('staff/ajax_edit_name')}",{id:id,name:name},function(data){
             if(data.code == '200'){
@@ -207,7 +211,11 @@
         },'json');
     }
     // ajax 修改联系方式
-    function t_ajax_lxfs(obj,id){
+    function t_ajax_lxfs(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var lxfs = $(obj).val();
         $.post("{:url('staff/ajax_edit_lxfs')}",{id:id,lxfs:lxfs},function(data){
             if(data.code == '200'){
@@ -219,7 +227,11 @@
         },'json');
     }
     // ajax 修改地址
-    function t_ajax_address(obj,id){
+    function t_ajax_address(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var address = $(obj).val();
         $.post("{:url('staff/ajax_edit_address')}",{id:id,address:address},function(data){
             if(data.code == '200'){
@@ -232,7 +244,11 @@
     }
 
     // ajax 修改产品
-    function t_ajax_product(obj,id){
+    function t_ajax_product(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
 
         var product=$(obj).val();
        
@@ -246,7 +262,11 @@
         },'json');
     }
     // ajax 产品数量
-    function t_ajax_number(obj,id){
+    function t_ajax_number(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var number=$(obj).val();
        
         $.post("{:url('staff/ajax_edit_number')}",{id:id,number:number},function(data){
@@ -259,7 +279,11 @@
         },'json');
     }
     // ajax 修改押金
-    function t_ajax_earnest_money(obj,id){
+    function t_ajax_earnest_money(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var earnest_money=$(obj).val();
 
         $.post("{:url('staff/ajax_edit_earnest_money')}",{id:id,earnest_money:earnest_money},function(data){
@@ -272,7 +296,11 @@
         },'json');
     }
     // ajax 修改支付方式
-    function t_ajax_pay_type(obj,id){
+    function t_ajax_pay_type(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var pay_type=$(obj).val();
 
         $.post("{:url('staff/ajax_edit_pay_type')}",{id:id,pay_type:pay_type},function(data){
@@ -285,7 +313,11 @@
         },'json');
     }
     // ajax 修改代收款
-    function t_ajax_ds_money(obj,id){
+    function t_ajax_ds_money(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var ds_money=$(obj).val();
 
         $.post("{:url('staff/ajax_edit_ds_money')}",{id:id,ds_money:ds_money},function(data){
@@ -312,7 +344,11 @@
     }
 
     // ajax 修改是否复购
-    function t_ajax_is_purchase(obj,id){
+    function t_ajax_is_purchase(obj,id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var is_purchase=$(obj).val();
 
         $.post("{:url('staff/ajax_edit_is_purchase')}",{id:id,is_purchase:is_purchase},function(data){
@@ -325,7 +361,11 @@
         },'json');
     }
     // ajax 修改进线日期
-    function t_ajax_line_time(id){
+    function t_ajax_line_time(id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var line_time = $('#j_x_riqi').val();
 
         $.post("{:url('staff/ajax_edit_line_time')}",{id:id,line_time:line_time},function(data){
@@ -339,7 +379,11 @@
     }
 
     // ajax 修改成交日期
-    function t_ajax_deal_time(id){
+    function t_ajax_deal_time(id,edit){
+        if(edit == '已通过'){
+            layer.msg('审核通过禁止修改'); 
+            return false;
+        }
         var deal_time = $('#c_j_riqi').val();
 
         $.post("{:url('staff/ajax_edit_deal_time')}",{id:id,deal_time:deal_time},function(data){

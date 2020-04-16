@@ -197,4 +197,14 @@ class Boss extends Common{
           echo json_encode(array('code'=>400,'msg'=>'修改失败'));
       }
     }
+    // 导出
+    public function daochu(){
+      // 数组格式化
+      // 先把实体转换
+      $str=str_replace('&amp;','&',input('post.str'));
+      
+      // 使用函数格式化字符串
+      parse_str($str,$arr);
+      dump($arr);
+    }
 }

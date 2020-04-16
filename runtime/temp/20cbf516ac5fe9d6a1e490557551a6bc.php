@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:80:"D:\phpStudy\PHPTutorial\WWW\Tst\public/../application/admin\view\boss\index.html";i:1587005682;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:80:"D:\phpStudy\PHPTutorial\WWW\Tst\public/../application/admin\view\boss\index.html";i:1587008681;}*/ ?>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -47,7 +47,7 @@
 
         <span class="fl">
 
-            <form>
+            <form id="fromstr">
 
                 <span class="layui-form-label">搜索：</span>
 
@@ -56,7 +56,7 @@
                 </div>
                 <div class="layui-input-inline">
                     <select name="verification_dsk" class="layui-input">
-                        <option value="待审核">审核</option>
+                        <option value="">审核</option>
                         <option value="待审核">待审核</option>
                         <option value="已拒绝">已拒绝</option>
                         <option value="已通过">已通过</option>
@@ -73,11 +73,11 @@
                             <option value="<?php echo $teacs['teac_id']; ?>" ><?php echo $teacs['nickname']; ?></option>
                         <?php endforeach; endif; else: echo "" ;endif; ?>
                     </select>
-
                 </div>
 
                 <input type="submit" class="layui-btn mgl-20" name="" value="查询">
                 <input type="button" class="layui-btn mgl-20" name="" value="总<?php echo $tot; ?>人数">
+                <a href="<?php echo url('boss/daochu'); ?>?str="><input type="button" class="layui-btn mgl-20" name="" value="导出" id="import"></a> 
             </form>
         </span>
     </div>
@@ -467,4 +467,8 @@
       });
 
     });
+    $('#import').click(function(){
+        datas=
+        alert(datas);
+    })  
 </script>
