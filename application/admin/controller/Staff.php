@@ -19,6 +19,12 @@ class Staff extends Common{
           $name = input('get.name');
           $map['name'] = array("like","%$name%");
       }
+
+      if(!empty(input('get.time'))){
+          $map['time'] = input('get.time');
+      }
+
+
       // 只显示自己的
       $map['user_id'] = $teac_id;
       $map['is_del'] = '1';
@@ -31,6 +37,10 @@ class Staff extends Common{
               -> order("id desc")
               -> where($map)
               -> count();
+      $qian = Db::table('st_information')
+              -> order("id desc")
+              -> where($map)
+              -> sum('earnest_money');
 
       // 分配数据
       $this->assign('data',$data);
@@ -39,6 +49,8 @@ class Staff extends Common{
       // 产品
       $this->assign('chanpinarr',$chanpinarr);
       $this->assign('liang',$liang);
+      $this->assign('qian',$qian);
+
       
       return view();
     }
@@ -53,6 +65,7 @@ class Staff extends Common{
         $post['user_id'] = $teac_id;
         $post['is_del'] = '1';
         $post['verification_dsk'] = '待审核';
+        $post['time'] = date("Y-m-d");
 
         $data = Db::table('st_information') -> insert($post);
       }else{

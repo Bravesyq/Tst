@@ -52,12 +52,19 @@
 
             <div class="layui-input-inline">
 
-                <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input">
+                <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input" style="width:80px;">
+
+            </div>
+            <div class="layui-input-inline">
+
+                <input type="text" name="time" autocomplete="off" placeholder="请选择日期" class="layui-input" id="serch_time" style="width:100px;">
 
             </div>
 
             <input type="submit" class="layui-btn mgl-20" name="" value="查询">
-            <input type="button" class="layui-btn mgl-20" name="" value="总{$tot}人数">
+            <input type="button" class="layui-btn mgl-20" name="" value="总{$tot}人">
+            <input type="button" class="layui-btn mgl-20" name="" value="累计收款{$qian}">
+
 
 
             </form>
@@ -165,7 +172,7 @@
                         <input type="text" value="{$value.deal_time}" style="width:80px;" id="c_j_riqi">
                         <span class="glyphicon glyphicon-ok" onclick="t_ajax_deal_time({$value.id},'{$value.verification_dsk}')"></span>
                     </td>
-                    <td>{$value.add_luru_time|date="Y-m-d H:i:s",###}</td>
+                    <td>{$value.time}</td>
                     <td>
 		              <span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#edit" onclick="edit(this,{$value.id})"></span>
 		            </td>
@@ -411,6 +418,12 @@
         ,trigger: 'click'
         ,type: 'date'
       });
+      laydate.render({
+        elem: '#serch_time' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+      
 
     });
 </script>

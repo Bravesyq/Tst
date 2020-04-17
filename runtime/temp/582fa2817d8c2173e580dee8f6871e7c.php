@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:83:"D:\phpStudy\PHPTutorial\WWW\Tst\public/../application/admin\view\zhuguan\index.html";i:1586999863;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:85:"D:\phpstudy_pro\WWW\www.sdgyt.com\public/../application/admin\view\zhuguan\index.html";i:1587043808;}*/ ?>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -52,9 +52,13 @@
                 <span class="layui-form-label">搜索：</span>
 
                 <div class="layui-input-inline">
-                    <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input">
+                    <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input" style="width:80px;">
                 </div>
+                <div class="layui-input-inline">
 
+                    <input type="text" name="time" autocomplete="off" placeholder="请选择日期" class="layui-input" id="serch_time" style="width:100px;">
+
+                </div>
                 <div class="layui-input-inline">
                     <select name="teac_id" class="layui-input">
                         <option value="">部门</option>
@@ -66,7 +70,9 @@
                 </div>
 
                 <input type="submit" class="layui-btn mgl-20" name="" value="查询">
-                <input type="button" class="layui-btn mgl-20" name="" value="总<?php echo $tot; ?>人数">
+                <input type="button" class="layui-btn mgl-20" name="" value="总<?php echo $tot; ?>人">
+                <input type="button" class="layui-btn mgl-20" name="" value="累计收款<?php echo $qian; ?>">
+
 
 
             </form>
@@ -135,7 +141,7 @@
                     <td><?php echo $value['is_purchase']; ?></td>
                     <td><?php echo $value['line_time']; ?></td>
                     <td><?php echo $value['deal_time']; ?></td>
-                    <td><?php echo date("Y-m-d H:i:s",$value['add_luru_time']); ?></td>
+                    <td><?php echo $value['time']; ?></td>
                     <td><?php echo $value['nickname']; ?></td>
 
                     <td>
@@ -168,97 +174,18 @@
 
 <script type="text/javascript">
 
-    //ajax改变状态
+    
+</script>
+<script type="text/javascript">
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+     
+      laydate.render({
+        elem: '#serch_time' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+      
 
-    function statu(obj,id,statu){
-
-        if(statu==2){
-
-            //禁用状态
-
-            $.post("<?php echo url('admin/adminstatu'); ?>",{id:id,statu:'1'},function(data){
-
-                if(data==1){
-
-                    $(obj).html('正常');
-
-                    $(obj).addClass('layui-btn-warm').removeClass('layui-btn-normal');
-
-                    $(obj).attr('onclick','statu(this,'+id+',1)');
-
-                }
-
-            });
-
-        }else{
-
-            //正常状态
-
-            $.post("<?php echo url('admin/adminstatu'); ?>",{id:id,statu:'2'},function(data){
-
-                if(data==1){
-
-                    $(obj).html('禁用');
-
-                    $(obj).addClass('layui-btn-normal').removeClass('layui-btn-warm');
-
-                    $(obj).attr('onclick','statu(this,'+id+',2)');
-
-                }
-
-            });
-
-        }
-
-    }
-
-
-    // 管理员的修改
-    function edit(obj,id){
-        $.post("<?php echo url('admin/admin_infoedit'); ?>",{id: id},function(data) {
-
-            $('#teacindex_edit').html(data);
-
-        });
-    }
-
-    // 管理员修改的保存
-    function adminusersave(){
-        var list = $("#savedata").serializeArray();
-
-        var obj = {};
-        $.each(list,function(){
-            obj[this.name] = this.value||'';
-        });
-        
-        $.post("<?php echo url('admin/adminusersave'); ?>",{obj:obj},function(res){
-            if (res.code == 1 ) {
-
-                $('#charge').modal('hide');
-                window.location.reload();
-
-            }else if (res.code === 2 ){
-
-                alert("修改失败");
-
-            }
-        });
-    }
-
-
-     //友链排序
-    function sorts(obj,id){
-        alert(id);
-
-        val=$(obj).val();
-        alert(val);
-        exit;
-        $.post('/st8866hk.php/book/ajax_book_sorts.html',{id:id,sort:val},function(data){
-            if (data==1) {
-                $("#refresh").click();
-            }else{
-                alert('排序失败');
-            }
-        });
-    }
+    });
 </script>

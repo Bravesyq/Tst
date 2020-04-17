@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:88:"D:\phpStudy\PHPTutorial\WWW\Tst\public/../application/admin\view\delivergoods\index.html";i:1587002495;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:90:"D:\phpstudy_pro\WWW\www.sdgyt.com\public/../application/admin\view\delivergoods\index.html";i:1587043454;}*/ ?>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -52,7 +52,13 @@
                 <span class="layui-form-label">搜索：</span>
 
                 <div class="layui-input-inline">
-                    <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input">
+                    <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input" style="width:80px;">
+                </div>
+                
+                <div class="layui-input-inline">
+
+                    <input type="text" name="time" autocomplete="off" placeholder="请选择日期" class="layui-input" id="serch_time" style="width:100px;">
+
                 </div>
 
                 <div class="layui-input-inline">
@@ -151,7 +157,7 @@
                     <td><?php echo $value['is_purchase']; ?></td>
                     <td><?php echo $value['line_time']; ?></td>
                     <td><?php echo $value['deal_time']; ?></td>
-                    <td><?php echo date("Y-m-d H:i:s",$value['add_luru_time']); ?></td>
+                    <td><?php echo $value['time']; ?></td>
                     <td><?php echo $value['nickname']; ?></td>
 
                     <td>
@@ -222,4 +228,17 @@
             }
         },'json');
     }
+</script>
+<script type="text/javascript">
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+
+      laydate.render({
+        elem: '#serch_time' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+      
+
+    });
 </script>

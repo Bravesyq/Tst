@@ -40,6 +40,11 @@ class Zhuguan extends Common{
           $name = input('get.name');
           $map['s1.name'] = array("like","%$name%");
       }
+
+      if(!empty(input('get.time'))){
+          $map['s1.time'] = input('get.time');
+      }
+
       $map['s1.is_del'] = '1';
       
       $tot = Db::table('st_information')
@@ -48,7 +53,12 @@ class Zhuguan extends Common{
                 -> join("st_user s2","s1.user_id = s2.teac_id") 
                 -> where($map) 
                 -> count();
-
+      $qian = Db::table('st_information')
+                -> field("s1.*,s2.nickname")
+                -> alias("s1") 
+                -> join("st_user s2","s1.user_id = s2.teac_id") 
+                -> where($map) 
+                -> sum('earnest_money');
       $data = Db::table('st_information')
                 -> field("s1.*,s2.nickname")
                 -> alias("s1") 
@@ -61,6 +71,8 @@ class Zhuguan extends Common{
       $this->assign('data',$data);
       // 总数
       $this->assign('tot',$tot);
+      $this->assign('qian',$qian);
+
       // 职员
       $this->assign('teacs',$teacs);
       

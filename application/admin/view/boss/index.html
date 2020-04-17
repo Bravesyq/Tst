@@ -51,8 +51,15 @@
                 <span class="layui-form-label">搜索：</span>
 
                 <div class="layui-input-inline">
-                    <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input">
+                    <input type="text" name="name" autocomplete="off" placeholder="输入姓名" class="layui-input" style="width:80px;">
                 </div>
+                
+                <div class="layui-input-inline">
+
+                    <input type="text" name="time" autocomplete="off" placeholder="请选择日期" class="layui-input" id="serch_time" style="width:100px;">
+
+                </div>
+
                 <div class="layui-input-inline">
                     <select name="verification_dsk" class="layui-input">
                         <option value="">审核</option>
@@ -64,7 +71,6 @@
 
                 </div>
 
-
                 <div class="layui-input-inline">
                     <select name="teac_id" class="layui-input">
                         <option value="">所有</option>
@@ -73,9 +79,19 @@
                         {/volist}
                     </select>
                 </div>
+                <div class="layui-input-inline">
 
+                    <input type="text" name="stat_time" autocomplete="off" placeholder="开始日期" class="layui-input" id="serch_stat_time" style="width:100px;">
+
+                </div>
+                <div class="layui-input-inline">
+
+                    <input type="text" name="end_time" autocomplete="off" placeholder="结束日期" class="layui-input" id="serch_end_time" style="width:100px;">
+
+                </div>
                 <input type="submit" class="layui-btn mgl-20" name="" value="查询">
-                <input type="button" class="layui-btn mgl-20" name="" value="总{$tot}人数">
+                <input type="button" class="layui-btn mgl-20" name="" value="总{$tot}人">
+                <input type="button" class="layui-btn mgl-20" name="" value="累计收款{$qian}">
                 <a href="{:url('boss/daochu')}?str="><input type="button" class="layui-btn mgl-20" name="" value="导出" id="import"></a> 
             </form>
         </span>
@@ -220,7 +236,7 @@
                     </td>
 
 
-                    <td>{$value.add_luru_time|date="Y-m-d H:i:s",###}</td>
+                    <td>{$value.time}</td>
                     <td>{$value.nickname}</td>
 
                     <td>
@@ -468,8 +484,28 @@
       });
 
     });
-    $('#import').click(function(){
-        datas=
-        alert(datas);
-    })  
+
+</script>
+<script type="text/javascript">
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+     
+      laydate.render({
+        elem: '#serch_time' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+      laydate.render({
+        elem: '#serch_stat_time' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+      laydate.render({
+        elem: '#serch_end_time' //指定元素
+        ,trigger: 'click'
+        ,type: 'date'
+      });
+      
+
+    });
 </script>

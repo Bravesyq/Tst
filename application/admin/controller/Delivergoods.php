@@ -22,6 +22,11 @@ class Delivergoods extends Common{
 			$name = input('get.name');
 			$map['s1.name'] = array("like","%$name%");
 		}
+
+    if(!empty(input('get.time'))){
+          $map['s1.time'] = input('get.time');
+      }
+
     	$map['s1.verification_dsk'] = '已通过';
       	$map['s1.is_del'] = '1';
       	

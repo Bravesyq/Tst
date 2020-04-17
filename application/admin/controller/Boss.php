@@ -11,10 +11,10 @@ class Boss extends Common{
     public function index(){
       	// 查询产品表
       	$chanpinarr = Db::table('st_product') -> where(array('product_stat'=>'1')) -> select();
-        	$liang = Db::table('st_liang') -> select();
+        $liang = Db::table('st_liang') -> select();
 
       	// 查询所有员工
-        	$teacs = Db::table('st_user') -> field('id,teac_id,nickname') -> select();
+        $teacs = Db::table('st_user') -> field('id,teac_id,nickname') -> select();
     		// 判断前台是否有单独的员工
     		if (!empty(input('teac_id'))) {
     			$map['s1.user_id'] = input('teac_id');
@@ -30,6 +30,16 @@ class Boss extends Common{
           $map['s1.verification_dsk'] = input('get.verification_dsk');
         }
 
+        if(!empty(input('get.time'))){
+            $map['s1.time'] = input('get.time');
+        }
+
+        if(!empty(input('get.stat_time')) && !empty(input('get.end_time'))){
+            
+            $stat_time = input('get.stat_time');
+            $end_time = input('get.end_time');
+            $map['s1.time'] = array('between',"$stat_time,$end_time");  
+        }
 
       	$map['s1.is_del'] = '1';
       	$tot = Db::table('st_information')
@@ -38,6 +48,12 @@ class Boss extends Common{
       			-> join("st_user s2","s1.user_id = s2.teac_id") 
       			-> where($map) 
       			-> count();
+        $qian = Db::table('st_information')
+            -> field("s1.*,s2.nickname")
+            -> alias("s1") 
+            -> join("st_user s2","s1.user_id = s2.teac_id") 
+            -> where($map) 
+            -> sum('earnest_money');
 
       	$data = Db::table('st_information')
             -> field("s1.*,s2.nickname")
@@ -51,6 +67,7 @@ class Boss extends Common{
   		$this->assign('data',$data);
   		// 总数
   		$this->assign('tot',$tot);
+      $this->assign('qian',$qian);
   		// 职员
   		$this->assign('teacs',$teacs);
   		// 产品
